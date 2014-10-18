@@ -1,9 +1,6 @@
 from django.db import models
 from django.core import files
 
-# Create your models here.
-
-
 
 class Photo(models.Model):
     media_id = models.AutoField(primary_key=True)
@@ -15,9 +12,10 @@ class Photo(models.Model):
     latitude = models.DecimalField(max_digits=7, decimal_places=3, null=True)
     altitude = models.DecimalField(max_digits=7, decimal_places=3, null=True)
 
-    # def upload_local_image(self, name, path):
-    #     with open(path, 'rb') as reader:
-    #         data = reader.read()
-    #     content = files.base.ContentFile(data)
-    #     path = files.storage.default_storage.save(name, content)
-    #     return path
+    def upload_local_image(self, name, path):
+        with open(path, 'rb') as file_:
+            self.image.save(name, files.File(file_))
+
+
+    def __unicode__(self):
+        return self.title

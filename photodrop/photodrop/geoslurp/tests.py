@@ -11,5 +11,6 @@ class TestPhoto(TestCase):
         title = 'kittey.jpg'
         photo = models.Photo.objects.create(title=title)
         photo.upload_local_image(title, '/home/stz/Pictures/kittey.jpg')
+        self.assertIsNotNone(photo.image)
 
     
