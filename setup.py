@@ -6,10 +6,13 @@ setup(
     url='git@github.com:hacktm/web-troglodytes',
     version='0.1',
     install_requires=[
-        'Django <1.7',
+        'pillow',
+        'boto',
         'ExifRead == 1.4.2',
+        'Django <1.7',
+        'django-storages',
     ],
-    entry_points={
-        'console_scripts': [],
-    }
+    # entry_points={
+    #     'console_scripts': [''],
+    # }
 )
