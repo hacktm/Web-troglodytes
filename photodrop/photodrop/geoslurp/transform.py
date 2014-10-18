@@ -6,11 +6,9 @@ import os
 import re
 
 
-def get_tags(path='~/Pictures/plane.jpg'):
-    full_path = os.path.expanduser(path)
-    with contextlib.closing(open(full_path, 'rb')) as f:
-        tags = exifread.process_file(f)
-        return tags
+def get_tags(photo_fd):
+    tags = exifread.process_file(photo_fd)
+    return tags
 
 
 def get_thumbnail(path):
@@ -59,13 +57,12 @@ def get_gps_coordinates(tags):
     return gps_lat_dd, gps_long_dd, altitude
 
 
-def get_location(path):
-    tags = get_tags(path)
+def get_location(photo_fd):
+    tags = get_tags(photo_fd)
     gps_lat, gps_long, altitude = get_gps_coordinates(tags)
     
-    return { 'photo': path, \
-             'latitude': gps_lat, \
-             'longitude': gps_long, \
+    return { 'latitude': gps_lat,
+             'longitude': gps_long,
              'altitude': altitude
     }
 

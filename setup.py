@@ -13,6 +13,9 @@ setup(
         'django-storages',
         'django-tastypie',
     ],
+    test_requires=[
+        'mock',
+    ]
     # entry_points={
     #     'console_scripts': [''],
     # }
