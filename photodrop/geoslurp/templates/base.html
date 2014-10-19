@@ -17,17 +17,57 @@
       }
     </style>
     <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" ></script>
     <script>
+      var markers;
       function initialize() {
         var map_canvas = document.getElementById('map_canvas');
+        var somewhere_athens = new google.maps.LatLng(38.0, 23.0);
         var map_options = {
-          center: new google.maps.LatLng(45.7410645, 21.2165),
-          zoom: 17,
+          center: somewhere_athens,
+          zoom: 7,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         }
         var map = new google.maps.Map(map_canvas, map_options)
+        var contentString = "<p> there is no spoon! </p>";
+        var infowindow = new google.maps.InfoWindow({content: ""});
+      
+
+        jQuery.ajax({
+          url: 'http://localhost:8000/api/photo/',
+          success: function(data) {
+            var locations = [],
+                markers = [],
+                boxes = [];
+      
+            for (var index in data.objects) {
+              locations[index] = new google.maps.LatLng(data.objects[index].latitude, data.objects[index].longitude);
+              markers[index] = new google.maps.Marker({
+                                  position: locations[index],
+                                  map: map,
+                                  title: data.objects[index].title,
+                                  description: data.objects[index].description,
+                                  image_url: data.objects[index].image,
+                                  icon: 'http://i.stack.imgur.com/KOh5X.png',
+                               });
+              content_description=data.objects[index].description
+
+              google.maps.event.addListener(markers[index], 'click', function() {
+                console.log("never!")
+                //boxes[index].open(map, markers[index]);
+                infowindow.setContent(
+                  '<img style="width: 200px; height: 150px;" src="' + this.image_url + '">'
+                );
+                infowindow.open(map, this);
+              });
+              
+            }
+          }
+        })
       }
       google.maps.event.addDomListener(window, 'load', initialize);
+
+
     </script>
     
 

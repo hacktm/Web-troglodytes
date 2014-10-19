@@ -63,6 +63,11 @@ def get_gps_coordinates(tags):
         match = re.search(r'(\d+)/(\d+)', str(gps_alt_tag))
         if match:
             gps_alt = int(match.group(1)) / (int(match.group(2)) * 1.0)
+        else:
+            match = re.search(r'^(\d+)$', str(gps_alt_tag))
+            if match:
+                gps_alt = int(match.group(1))
+                
 
     return gps_lat_dd, gps_long_dd, gps_alt
 
