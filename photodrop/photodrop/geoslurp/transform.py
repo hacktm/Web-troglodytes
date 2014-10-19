@@ -39,37 +39,46 @@ def parse_gps_coordinate(coordinate):
         seconds = int(match.group(3)) / (int(match.group(4)) * 1.0)
         return degrees, minutes, seconds
 
+    return None, None, None
+
 
 def get_gps_coordinates(tags):
-    gps_lat_dms = tags['GPS GPSLatitude']
-    degrees, minutes, seconds = parse_gps_coordinate(gps_lat_dms)
-    gps_lat_dd = dms_to_dd(degrees, minutes, seconds)
+    gps_lat_dms = tags.get('GPS GPSLatitude')
+    gps_lat_dd = None
+    if gps_lat_dms is not None:
+        degrees, minutes, seconds = parse_gps_coordinate(gps_lat_dms)
+        if degrees is not None and minutes is not None and seconds is not None:
+            gps_lat_dd = dms_to_dd(degrees, minutes, seconds)
 
-    gps_long_dms = tags['GPS GPSLongitude']
-    degrees, minutes, seconds = parse_gps_coordinate(gps_long_dms)
-    gps_long_dd = dms_to_dd(degrees, minutes, seconds)
+    gps_long_dms = tags.get('GPS GPSLongitude')
+    gps_long_dd = None
+    if gps_long_dms is not None:
+        degrees, minutes, seconds = parse_gps_coordinate(gps_long_dms)
+        if degrees is not None and minutes is not None and seconds is not None:
+            gps_long_dd = dms_to_dd(degrees, minutes, seconds)
 
-    altitude = 0
-    match = re.search(r'(\d+)/(\d+)', str(tags['GPS GPSAltitude']))
-    if match:
-        altitude = int(match.group(1)) / (int(match.group(2)) * 1.0)
+    gps_alt_tag = tags.get('GPS GPSAltitude')
+    gps_alt = None
+    if gps_alt_tag is not None:
+        match = re.search(r'(\d+)/(\d+)', str(gps_alt_tag))
+        if match:
+            gps_alt = int(match.group(1)) / (int(match.group(2)) * 1.0)
 
-    return gps_lat_dd, gps_long_dd, altitude
+    return gps_lat_dd, gps_long_dd, gps_alt
 
 
 def get_location(photo_fd):
     tags = get_tags(photo_fd)
-    gps_lat, gps_long, altitude = get_gps_coordinates(tags)
-    
-    return { 'latitude': gps_lat,
-             'longitude': gps_long,
-             'altitude': altitude
-    }
+    gps_lat, gps_long, gps_alt = get_gps_coordinates(tags)
+
+    location_dict = {}
+    if gps_lat is not None and gps_long is not None and gps_alt is not None:
+        location_dict['latitude'] = gps_lat
+        location_dict['longitude'] = gps_long
+        location_dict['altitude'] = gps_alt
+
+    return location_dict
 
 
 if __name__ == '__main__':
     print get_location(sys.argv[1])
-#    tags = get_tags(sys.argv[1])
-#    get_gps_coordinates(tags)
-#    pprint.pprint(hide_key(tags, 'JPEGThumbnail'))
-
