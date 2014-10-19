@@ -12,8 +12,8 @@
 
     <style>
       #map_canvas {
-        width: 900px;
-        height: 600px;
+        width: 1300px;
+        height: 800px;
       }
     </style>
     <script src="https://maps.googleapis.com/maps/api/js"></script>
@@ -29,16 +29,14 @@
           mapTypeId: google.maps.MapTypeId.ROADMAP
         }
         var map = new google.maps.Map(map_canvas, map_options)
-        var contentString = "<p> there is no spoon! </p>";
         var infowindow = new google.maps.InfoWindow({content: ""});
       
 
         jQuery.ajax({
-          url: 'http://localhost:8000/api/photo/',
+          url: '/api/photo/',
           success: function(data) {
             var locations = [],
-                markers = [],
-                boxes = [];
+                markers = [];
       
             for (var index in data.objects) {
               locations[index] = new google.maps.LatLng(data.objects[index].latitude, data.objects[index].longitude);
@@ -47,16 +45,14 @@
                                   map: map,
                                   title: data.objects[index].title,
                                   description: data.objects[index].description,
-                                  image_url: data.objects[index].image,
-                                  icon: 'http://i.stack.imgur.com/KOh5X.png',
+                                  image_url: data.objects[index].image
+//                                  icon: 'http://i.stack.imgur.com/KOh5X.png',
                                });
               content_description=data.objects[index].description
 
               google.maps.event.addListener(markers[index], 'click', function() {
-                console.log("never!")
-                //boxes[index].open(map, markers[index]);
                 infowindow.setContent(
-                  '<img style="width: 200px; height: 150px;" src="' + this.image_url + '">'
+                  '<img style="width: 500px;" src="' + this.image_url + '">' + '<p>' + this.description +'</p'
                 );
                 infowindow.open(map, this);
               });
