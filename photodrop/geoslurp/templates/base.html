@@ -7,6 +7,30 @@
     <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}geoslurp/css/bootstrap-responsive.min.css"/>
     {% block extra_style %}
     <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}geoslurp/css/base.css"/>
+
+
+
+    <style>
+      #map_canvas {
+        width: 900px;
+        height: 600px;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script>
+      function initialize() {
+        var map_canvas = document.getElementById('map_canvas');
+        var map_options = {
+          center: new google.maps.LatLng(45.7410645, 21.2165),
+          zoom: 17,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map = new google.maps.Map(map_canvas, map_options)
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+    
+
     {% endblock %}
   </head>
 
@@ -18,7 +42,7 @@
           <div class="navbar-inner">
             <div class="container">
               <ul class="nav">
-                <li><a href="{% url 'geoslurp_home' %}"> {% trans "Home" %} </a></li>
+                <li><a href="{% url 'geoslurp_home' %}"> {% trans "Map" %} </a></li>
                 {% if user.is_authenticated %}
                 <li><a href="{% url 'accounts_logout' %}"> {% trans "Sign Out" %}</a></li>
                 {% else %}
@@ -31,13 +55,21 @@
       </div>
       {% endblock %}
       <div class="jumbotron">
-        {% block content %}{% endblock %}
+        {% block content %}
+
+        <div class="row">
+          <div class="span12">
+	    <div class="span8" id="map_canvas"></div>
+          </div>
+        </div>
+
+        {% endblock %}
       </div>
 
       <hr> </hr>
       {% block footer %}
       <div class="footer">
-        <p>© Zoltan Szeredi, 2014</p>
+        <p>© Troglodytes, 2014</p>
       </div>
       {% endblock %}
     </div>
