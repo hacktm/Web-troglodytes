@@ -5,6 +5,7 @@ setup(
     name='Photodrop',
     url='git@github.com:hacktm/web-troglodytes',
     version='0.1',
+    packages=find_packages(),
     install_requires=[
         'pillow',
         'boto',
@@ -12,6 +13,7 @@ setup(
         'Django <1.7',
         'django-storages',
         'django-tastypie',
+        'django-braces',
     ],
     test_requires=[
         'mock',

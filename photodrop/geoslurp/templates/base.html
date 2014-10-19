@@ -1,0 +1,47 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{% block title %} Photodrop {% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}geoslurp/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}geoslurp/css/bootstrap-responsive.min.css"/>
+    {% block extra_style %}
+    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}geoslurp/css/base.css"/>
+    {% endblock %}
+  </head>
+
+  <body>
+    <div class="container">
+      {% block sidebar %}
+      <div class="masthead">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="container">
+              <ul class="nav">
+                <li><a href="{% url 'geoslurp_home' %}"> {% trans "Home" %} </a></li>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'accounts_logout' %}"> {% trans "Sign Out" %}</a></li>
+                {% else %}
+                <li><a href="{% url 'accounts_login' %}"> {% trans "Sign In" %}</a></li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endblock %}
+      <div class="jumbotron">
+        {% block content %}{% endblock %}
+      </div>
+
+      <hr> </hr>
+      {% block footer %}
+      <div class="footer">
+        <p>© Zoltan Szeredi, 2014</p>
+      </div>
+      {% endblock %}
+    </div>
+
+    <script type="text/javascript" src="{{STATIC_URL}}geoslurp/js/bootstrap.min.js"></script>
+  </body>
+</html>

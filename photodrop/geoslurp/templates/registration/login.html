@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block extra_style %}
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}geoslurp/css/login.css"/>
+{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block content %}
+
+{% if form.errors %}
+<p class="error">{% trans "Sorry, that's not a valid username or password" %}</p>
+{% endif %}
+
+<form class="form-signin" action="" method="post">
+  {% csrf_token %}
+  <label for="username">{% trans "Email" %}:</label>
+  <input class="input-block-level" type="text" name="username" value="" id="username"> </input>
+  <label for="password">{% trans "Password" %}:</label>
+  <input class="input-block-level" type="password" name="password" value="" id="password"> </input>
+  <button class="btn btn-large btn-primary" type="submit"> {% trans "Sign In" %} </button>
+  <input type="hidden" name="next" value="{{ next|escape }}" />
+</form>
+
+{% endblock %}
+{% block footer %}{% endblock %}

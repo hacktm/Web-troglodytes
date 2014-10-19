@@ -1,0 +1,3 @@
+include README.md
+recursive-include photodrop/geoslurp/templates *
+recursive-include photodrop/geoslurp/static *
